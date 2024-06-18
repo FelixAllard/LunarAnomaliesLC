@@ -1,0 +1,10 @@
+namespace LunarAnomalies;
+
+/// <summary>
+/// The Plugin's logging class.
+/// </summary>
+static class P
+{
+    internal static void Log(object data) => Plugin.Logger.LogInfo(data);
+    internal static void LogError(object data) => Plugin.Logger.LogError(data);
+}
