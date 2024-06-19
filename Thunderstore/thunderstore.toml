@@ -5,7 +5,7 @@ schemaVersion = "0.0.1"
 repository = "https://thunderstore.io"
 
 [package]
-description = "Example Enemy for Lethal Company."
+description = "Adds event that triggers when the game reaches 7 pm"
 websiteUrl = "https://github.com/Hamunii/LC-ExampleEnemy"
 containsNsfwContent = false
 [package.dependencies]

@@ -24,7 +24,7 @@ public class BloodMoon : Moon
 
     public void ApplyImmediateEffect()
     {
-        
+        //No immediate effect!
     }
 
     public void ApplyConstantEffect()
