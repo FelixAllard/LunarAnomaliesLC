@@ -37,4 +37,9 @@ public class LightupScript : MonoBehaviour
         LunarAnomaliesManager.UpdateMoon();
         
     }
+
+    private void OnDestroy()
+    {
+        MonoBehaviourHelper.Instance.CancelInvokeMoonUpdate();
+    }
 }

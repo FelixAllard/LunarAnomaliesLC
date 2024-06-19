@@ -8,9 +8,10 @@ public class HarvestMoon : Moon
     public string name { get; set; } = "Harvest Moon";
     public Color color { get; set; } = new Color(218,206,10,255);
     public GameObject moonObject { get; set; }
-    public float precentageChanceSpawn { get; set; } = 10f;
+    public float precentageChanceSpawn { get; set; } = 0f;
     public int timeBetweenEachCall { get; set; } = 4;
-    public string messageMoon { get; set; } = "Loot value doubled";
+    public string headerText { get; set; } = "The Harvest Moon casts its golden light...";
+    public string messageMoon { get; set; } = "The company is feeling generous";
 
     public void Init(GameObject gameObject)
     {
@@ -19,17 +20,7 @@ public class HarvestMoon : Moon
 
     public void ApplyImmediateEffect()
     {
-        foreach (var item in GameObject.FindGameObjectsWithTag("PhysicsProp"))
-        {
-            PhysicsProp itemPhysicProp = item.GetComponent<PhysicsProp>();
-            if (itemPhysicProp != null)
-            {
-                if (itemPhysicProp.isInFactory)
-                {
-                    itemPhysicProp.SetScrapValue(itemPhysicProp.scrapValue*2);
-                }
-            }
-        }
+        MoonsNetworkManageer.ExtendDeadlineClientRpc(1);
     }
 
     

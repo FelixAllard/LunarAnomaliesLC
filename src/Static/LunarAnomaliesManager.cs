@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using LunarAnomalies.MoonsScript;
 using Unity.Netcode;
 using UnityEngine;
@@ -33,9 +34,9 @@ public static class LunarAnomaliesManager
 
     public static void TryApplyingEffect()
     {
-
+    //TODO reput 770
         Plugin.Logger.LogInfo(RoundManager.Instance.timeScript.globalTime.ToString());
-        if (RoundManager.Instance.timeScript.globalTime >= 770)
+        if (RoundManager.Instance.timeScript.globalTime >= 150)
         {
             if (hasAlreadyTried == false)
             {
@@ -53,6 +54,7 @@ public static class LunarAnomaliesManager
     [ServerRpc]
     public static void ReachedNightServerRpc()
     {
+        moons.Reverse();
         foreach (var moon in moons)
         {
             if (moon.precentageChanceSpawn >= UnityEngine.Random.Range(0f, 100f))
@@ -88,7 +90,7 @@ public static class LunarAnomaliesManager
     [ClientRpc]
     public static void TellPeopleMoonIsStartingClientRpc()
     {
-        HUDManager.Instance.DisplayTip($"{currentMoon.name} is starting!",currentMoon.messageMoon, true);
+        HUDManager.Instance.DisplayTip(currentMoon.headerText ,currentMoon.messageMoon, true);
     }
     // Call this method to stop the repeating function
     public static void StopUpdatingMoon()
@@ -100,6 +102,29 @@ public static class LunarAnomaliesManager
     public static void UpdateMoon()
     {
         currentMoon.ApplyConstantEffect();
+    }
+    public static void CreateCanvasAndText(string textContent)
+    {
+        // Create a new Canvas GameObject
+        GameObject canvasGO = new GameObject("Canvas");
+        Canvas canvas = canvasGO.AddComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+
+        // Create a new Text GameObject
+        GameObject textGO = new GameObject("Text");
+        textGO.transform.SetParent(canvasGO.transform);
+
+        // Set up RectTransform for the Text
+        RectTransform rectTransform = textGO.AddComponent<RectTransform>();
+        rectTransform.sizeDelta = new Vector2(600, 200);
+        rectTransform.anchoredPosition = Vector2.zero;
+
+        // Add Text component
+        TextMesh text = textGO.AddComponent<TextMesh>();
+        text.text = textContent;
+        text.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+        text.fontSize = 50;
+        text.color = Color.white;
     }
 
 }

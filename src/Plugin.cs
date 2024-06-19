@@ -46,6 +46,7 @@ namespace LunarAnomalies {
             LunarAnomaliesManager.SetMoon<DiamondMoon>(moon => moon.Init(blueMoon));
             LunarAnomaliesManager.SetMoon<BloodMoon>(moon => moon.Init(redMoon));
             harmony.PatchAll(typeof(StartOfRoundPatch));
+            harmony.PatchAll(typeof(EntranceTeleport));
             Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
         }
 

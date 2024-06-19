@@ -13,9 +13,10 @@ public class BloodMoon : Moon
     public Color color { get; set; } = new Color(224,29,20,255);
     public GameObject moonObject { get; set; }
     //TODO put it back at 10f
-    public float precentageChanceSpawn { get; set; } = 10f;
+    public float precentageChanceSpawn { get; set; } = 0f;
     public int timeBetweenEachCall { get; set; } = 4;
-    public string messageMoon { get; set; } = "ESCAPE NOW!!!";
+    public string headerText { get; set; } = "The Blood Moon rises...";
+    public string messageMoon { get; set; } = "Beware the terrors that come with its crimson glow";
 
     public void Init(GameObject gameObject)
     {

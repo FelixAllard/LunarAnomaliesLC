@@ -33,6 +33,12 @@ public interface Moon
         get;
         set;
     }
+
+    public string headerText
+    {
+        get;
+        set;
+    }
     public string messageMoon
     {
         get;

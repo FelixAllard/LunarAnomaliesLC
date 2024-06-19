@@ -48,6 +48,10 @@ public class MonoBehaviourHelper : MonoBehaviour
         InvokeRepeating("MiddlemanUpdateMoon", 0f, x);
     }
 
+    public void CancelInvokeMoonUpdate()
+    {
+        CancelInvoke("MiddlemanUpdateMoon");
+    }
     public void MiddlemanUpdateMoon()
     {
         Plugin.Logger.LogInfo("We did do the update");
