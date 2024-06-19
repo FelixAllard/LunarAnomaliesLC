@@ -10,6 +10,7 @@ public class HarvestMoon : Moon
     public GameObject moonObject { get; set; }
     public float precentageChanceSpawn { get; set; } = 10f;
     public int timeBetweenEachCall { get; set; } = 4;
+    public string messageMoon { get; set; } = "Loot value doubled";
 
     public void Init(GameObject gameObject)
     {

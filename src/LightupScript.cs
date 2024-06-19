@@ -6,8 +6,8 @@ namespace LunarAnomalies;
 
 public class LightupScript : MonoBehaviour
 {
-    public float duration = 30f;
-    private float targetValue = 0.1612916f;
+    private float duration = 30f;
+    private float targetValue = 0.8f; //0.1612916f;
     private float currentValue = 0f;
     public Light light;
     void Start()
@@ -27,5 +27,14 @@ public class LightupScript : MonoBehaviour
         }
 
         light.intensity = targetValue; // Ensure the final value is set exactly to the target
+        LunarAnomaliesManager.currentMoon.ApplyImmediateEffect();
+        LunarAnomaliesManager.TellPeopleMoonIsStartingClientRpc();
+        InvokeRepeating("MiddleManFunction", 0f, LunarAnomaliesManager.currentMoon.timeBetweenEachCall);
+    }
+
+    public void MiddleManFunction()
+    {
+        LunarAnomaliesManager.UpdateMoon();
+        
     }
 }

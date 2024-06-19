@@ -33,6 +33,8 @@ public static class LunarAnomaliesManager
 
     public static void TryApplyingEffect()
     {
+
+        Plugin.Logger.LogInfo(RoundManager.Instance.timeScript.globalTime.ToString());
         if (RoundManager.Instance.timeScript.globalTime >= 770)
         {
             if (hasAlreadyTried == false)
@@ -55,9 +57,8 @@ public static class LunarAnomaliesManager
         {
             if (moon.precentageChanceSpawn >= UnityEngine.Random.Range(0f, 100f))
             {
-                SpawnMoonClientRpc(moon.name);
-                moon.ApplyImmediateEffect();
-                StartUpdatingMoon(moon.timeBetweenEachCall);
+                SpawnMoonClientRpc(moon.name); ;
+                //StartUpdatingMoon(moon.timeBetweenEachCall);
                 currentMoon = moon;
                 return;
             }
@@ -81,12 +82,18 @@ public static class LunarAnomaliesManager
         // You can adjust the initial delay if needed
         // Unity will automatically handle the repeating calls
         // The method will be called on the first frame and then repeatedly every 'interval' seconds
-        MonoBehaviourHelper.Instance.InvokeRepeating(nameof(UpdateMoon), 3f, interval);
+        
+        MonoBehaviourHelper.Instance.InvokeRepeatCallMoon(interval);
     }
-
+    [ClientRpc]
+    public static void TellPeopleMoonIsStartingClientRpc()
+    {
+        HUDManager.Instance.DisplayTip($"{currentMoon.name} is starting!",currentMoon.messageMoon, true);
+    }
     // Call this method to stop the repeating function
     public static void StopUpdatingMoon()
     {
+        Plugin.Logger.LogInfo("Called Moon " + currentMoon.name + " intervale!");
         // Cancel the repeating invocation of UpdateMoon
         MonoBehaviourHelper.Instance.CancelInvoke(nameof(UpdateMoon));
     }

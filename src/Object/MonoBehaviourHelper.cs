@@ -43,6 +43,16 @@ public class MonoBehaviourHelper : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    public void InvokeRepeatCallMoon(float x)
+    {
+        InvokeRepeating("MiddlemanUpdateMoon", 0f, x);
+    }
+
+    public void MiddlemanUpdateMoon()
+    {
+        Plugin.Logger.LogInfo("We did do the update");
+        LunarAnomaliesManager.UpdateMoon();
+    }
     private void Middleman()
     {
         LunarAnomaliesManager.TryApplyingEffect();

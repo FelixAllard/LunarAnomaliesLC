@@ -12,8 +12,10 @@ public class BloodMoon : Moon
     public string name { get; set; } = "Blood Moon";
     public Color color { get; set; } = new Color(224,29,20,255);
     public GameObject moonObject { get; set; }
-    public float precentageChanceSpawn { get; set; } = 100f;
-    public int timeBetweenEachCall { get; set; } = 60;
+    //TODO put it back at 10f
+    public float precentageChanceSpawn { get; set; } = 10f;
+    public int timeBetweenEachCall { get; set; } = 4;
+    public string messageMoon { get; set; } = "ESCAPE NOW!!!";
 
     public void Init(GameObject gameObject)
     {
@@ -29,11 +31,12 @@ public class BloodMoon : Moon
     {
         if (Random.Range(0, 2)==0)
         {
+            Plugin.Logger.LogInfo("Spawning Inside enemy");
             var allEnemiesList = new List<SpawnableEnemyWithRarity>();
             allEnemiesList.AddRange(RoundManager.Instance.currentLevel.Enemies);
 
             // Filter the enemies based on your criteria
-            var filteredEnemies = allEnemiesList.Where(x => !x.enemyType.isOutsideEnemy && !x.enemyType.spawningDisabled).ToList();
+            var filteredEnemies = allEnemiesList.Where(x => !x.enemyType.isOutsideEnemy).ToList();
 
             // Randomly select one enemy from the filtered list
             SpawnableEnemyWithRarity enemyToSpawn = null;
@@ -64,11 +67,12 @@ public class BloodMoon : Moon
         }
         else
         {
+            Plugin.Logger.LogInfo("Spawning Outside enemy");
             var allEnemiesList = new List<SpawnableEnemyWithRarity>();
-            allEnemiesList.AddRange(RoundManager.Instance.currentLevel.Enemies);
+            allEnemiesList.AddRange(RoundManager.Instance.currentLevel.OutsideEnemies);
 
             // Filter the enemies based on your criteria
-            var filteredEnemies = allEnemiesList.Where(x => x.enemyType.isOutsideEnemy && !x.enemyType.spawningDisabled).ToList();
+            var filteredEnemies = allEnemiesList.Where(x => x.enemyType.isOutsideEnemy).ToList();
 
             // Randomly select one enemy from the filtered list
             SpawnableEnemyWithRarity enemyToSpawn = null;

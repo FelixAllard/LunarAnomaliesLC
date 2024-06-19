@@ -10,6 +10,8 @@ public class DiamondMoon : Moon
     public GameObject moonObject { get; set; }
     public float precentageChanceSpawn { get; set; } = 10f;
     public int timeBetweenEachCall { get; set; } = 60;
+    public string messageMoon { get; set; } = "Added 1 day to quota";
+
     public void Init(GameObject gameObject)
     {
         moonObject = gameObject;;
@@ -23,6 +25,5 @@ public class DiamondMoon : Moon
 
     public void ApplyConstantEffect()
     {
-        throw new System.NotImplementedException();
     }
 }

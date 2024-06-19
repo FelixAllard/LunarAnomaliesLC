@@ -33,6 +33,11 @@ public interface Moon
         get;
         set;
     }
+    public string messageMoon
+    {
+        get;
+        set;
+    }
     public void Init(GameObject gameObject);
     public void ApplyImmediateEffect();
     public void ApplyConstantEffect();

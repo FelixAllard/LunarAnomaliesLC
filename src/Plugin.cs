@@ -2,8 +2,10 @@
 using System.Reflection;
 using BepInEx;
 using BepInEx.Logging;
+using HarmonyLib;
 using LethalLib.Modules;
 using LunarAnomalies.MoonsScript;
+using LunarAnomalies.Patch;
 using UnityEngine;
 
 namespace LunarAnomalies {
@@ -12,22 +14,38 @@ namespace LunarAnomalies {
     public class Plugin : BaseUnityPlugin {
         internal static new ManualLogSource Logger = null!;
         public static AssetBundle? ModAssets;
+        private readonly Harmony harmony = new Harmony(PluginInfo.PLUGIN_GUID);
 
         private void Awake() {
             Logger = base.Logger;
             InitializeNetworkBehaviours();
-            var bundleName = "lunaranomaliesmodassets";
-            ModAssets = AssetBundle.LoadFromFile(Path.Combine(Path.GetDirectoryName(Info.Location), bundleName));
-            if (ModAssets == null) {
-                Logger.LogError($"Failed to load custom assets.");
+            string bundleName = "lunaranomaliesmodassets";
+            string bundlePath =Path.Combine(Path.GetDirectoryName(Info.Location), bundleName);
+            Logger.LogInfo($"Attempting to load AssetBundle from path: {bundlePath}");
+
+            if (!File.Exists(bundlePath))
+            {
+                Logger.LogError($"AssetBundle file does not exist at path: {bundlePath}");
                 return;
             }
+
+            ModAssets = AssetBundle.LoadFromFile(bundlePath);
+
+            if (ModAssets == null)
+            {
+                Logger.LogError("Failed to load custom assets.");
+                return;
+            }
+
+            Logger.LogInfo("AssetBundle loaded successfully.");
+            // Now you can load your assets from the bundle
             var goldMoon = ModAssets.LoadAsset<GameObject>("GoldMoon");
             var blueMoon = ModAssets.LoadAsset<GameObject>("BlueMoon");
             var redMoon = ModAssets.LoadAsset<GameObject>("RedMoon");
             LunarAnomaliesManager.SetMoon<HarvestMoon>(moon => moon.Init(goldMoon));
             LunarAnomaliesManager.SetMoon<DiamondMoon>(moon => moon.Init(blueMoon));
             LunarAnomaliesManager.SetMoon<BloodMoon>(moon => moon.Init(redMoon));
+            harmony.PatchAll(typeof(StartOfRoundPatch));
             Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
         }
 
