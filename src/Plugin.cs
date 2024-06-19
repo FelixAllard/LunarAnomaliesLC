@@ -22,10 +22,12 @@ namespace LunarAnomalies {
                 Logger.LogError($"Failed to load custom assets.");
                 return;
             }
-            var moonAsset = ModAssets.LoadAsset<GameObject>("moonAsset");
-            LunarAnomaliesManager.Init(moonAsset);
-            LunarAnomaliesManager.SetMoon<BloodMoon>(moon => moon.Init(LunarAnomaliesManager.Moon));
-
+            var goldMoon = ModAssets.LoadAsset<GameObject>("GoldMoon");
+            var blueMoon = ModAssets.LoadAsset<GameObject>("BlueMoon");
+            var redMoon = ModAssets.LoadAsset<GameObject>("RedMoon");
+            LunarAnomaliesManager.SetMoon<HarvestMoon>(moon => moon.Init(goldMoon));
+            LunarAnomaliesManager.SetMoon<DiamondMoon>(moon => moon.Init(blueMoon));
+            LunarAnomaliesManager.SetMoon<BloodMoon>(moon => moon.Init(redMoon));
             Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
         }
 

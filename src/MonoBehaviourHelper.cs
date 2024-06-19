@@ -38,8 +38,13 @@ public class MonoBehaviourHelper : MonoBehaviour
 
         // Set the instance to this GameObject
         instance = this;
-
+        InvokeRepeating("Middleman", 0f, 5f);
         // Ensure that this GameObject persists across scenes
         DontDestroyOnLoad(gameObject);
+    }
+
+    private void Middleman()
+    {
+        LunarAnomaliesManager.TryApplyingEffect();
     }
 }

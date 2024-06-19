@@ -90,7 +90,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="src\External\" />
     <Folder Include="Thunderstore\Packages\" />
     <Folder Include="Thunderstore\Ressources\" />
   </ItemGroup>
