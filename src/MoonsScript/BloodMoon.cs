@@ -12,8 +12,7 @@ public class BloodMoon : Moon
     public string name { get; set; } = "Blood Moon";
     public Color color { get; set; } = new Color(224,29,20,255);
     public GameObject moonObject { get; set; }
-    //TODO put it back at 10f
-    public float precentageChanceSpawn { get; set; } = 0f;
+    public float precentageChanceSpawn { get; set; } = 10f;
     public int timeBetweenEachCall { get; set; } = 4;
     public string headerText { get; set; } = "The Blood Moon rises...";
     public string messageMoon { get; set; } = "Beware the terrors that come with its crimson glow";
@@ -30,6 +29,10 @@ public class BloodMoon : Moon
 
     public void ApplyConstantEffect()
     {
+        if(!RoundManager.Instance.IsHost)
+            return;
+        if (GameObject.FindObjectsOfType<EnemyAI>().Length > 30)
+            return;
         if (Random.Range(0, 2)==0)
         {
             Plugin.Logger.LogInfo("Spawning Inside enemy");
@@ -52,7 +55,7 @@ public class BloodMoon : Moon
                 Plugin.Logger.LogError("No enemies match the criteria");
                 return;
             }
-            GameObject SpawnEnemy = RoundManager.Instance.SpawnEnemyGameObject(
+            RoundManager.Instance.SpawnEnemyGameObject(
                 RoundManager.Instance.GetRandomNavMeshPositionInRadius(
                     RoundManager.Instance.allEnemyVents[
                         RandomNumberGenerator.GetInt32(
@@ -94,7 +97,7 @@ public class BloodMoon : Moon
                 Plugin.Logger.LogError("Didn't find an Outside enemy");
                 return;
             }
-            GameObject SpawnEnemy = RoundManager.Instance.SpawnEnemyGameObject(
+            RoundManager.Instance.SpawnEnemyGameObject(
                 RoundManager.Instance.GetRandomNavMeshPositionInRadius(
                     RoundManager.Instance.outsideAINodes[Random.Range(0,RoundManager.Instance.outsideAINodes.Length)].transform.position,
                     10f

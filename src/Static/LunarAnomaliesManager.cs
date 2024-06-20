@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using LunarAnomalies.MoonsScript;
+using StaticNetcodeLib;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
@@ -10,6 +11,7 @@ using Random = System.Random;
 
 namespace LunarAnomalies;
 
+[StaticNetcode]
 public static class LunarAnomaliesManager
 {
 
@@ -34,14 +36,16 @@ public static class LunarAnomaliesManager
 
     public static void TryApplyingEffect()
     {
-    //TODO reput 770
         Plugin.Logger.LogInfo(RoundManager.Instance.timeScript.globalTime.ToString());
-        if (RoundManager.Instance.timeScript.globalTime >= 150)
+        if (RoundManager.Instance.timeScript.globalTime >= 730)
         {
             if (hasAlreadyTried == false)
             {
                 hasAlreadyTried = true;
-                ReachedNightServerRpc();
+                if (RoundManager.Instance.IsHost)
+                {
+                    ReachedNight();
+                }
             }
             
         }
@@ -51,18 +55,20 @@ public static class LunarAnomaliesManager
         }
         
     }
-    [ServerRpc]
-    public static void ReachedNightServerRpc()
+    public static void ReachedNight()
     {
-        moons.Reverse();
-        foreach (var moon in moons)
+        if (moonGameObject == null)
         {
-            if (moon.precentageChanceSpawn >= UnityEngine.Random.Range(0f, 100f))
+            moons.Reverse();
+            foreach (var moon in moons)
             {
-                SpawnMoonClientRpc(moon.name); ;
-                //StartUpdatingMoon(moon.timeBetweenEachCall);
-                currentMoon = moon;
-                return;
+                if (moon.precentageChanceSpawn >= UnityEngine.Random.Range(0f, 100f))
+                {
+                    SpawnMoonClientRpc(moon.name);
+                    //StartUpdatingMoon(moon.timeBetweenEachCall);
+                    currentMoon = moon;
+                    return;
+                }
             }
         }
     }
@@ -73,19 +79,11 @@ public static class LunarAnomaliesManager
         {
             if (moon.name == name)
             {
+                currentMoon = moon;
                 moonGameObject = GameObject.Instantiate(moon.moonObject);
             }
             
         }
-    }
-    public static void StartUpdatingMoon(float interval)
-    {
-        // Call UpdateMoon function every 'interval' seconds, starting after 0 seconds
-        // You can adjust the initial delay if needed
-        // Unity will automatically handle the repeating calls
-        // The method will be called on the first frame and then repeatedly every 'interval' seconds
-        
-        MonoBehaviourHelper.Instance.InvokeRepeatCallMoon(interval);
     }
     [ClientRpc]
     public static void TellPeopleMoonIsStartingClientRpc()
@@ -102,29 +100,6 @@ public static class LunarAnomaliesManager
     public static void UpdateMoon()
     {
         currentMoon.ApplyConstantEffect();
-    }
-    public static void CreateCanvasAndText(string textContent)
-    {
-        // Create a new Canvas GameObject
-        GameObject canvasGO = new GameObject("Canvas");
-        Canvas canvas = canvasGO.AddComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-
-        // Create a new Text GameObject
-        GameObject textGO = new GameObject("Text");
-        textGO.transform.SetParent(canvasGO.transform);
-
-        // Set up RectTransform for the Text
-        RectTransform rectTransform = textGO.AddComponent<RectTransform>();
-        rectTransform.sizeDelta = new Vector2(600, 200);
-        rectTransform.anchoredPosition = Vector2.zero;
-
-        // Add Text component
-        TextMesh text = textGO.AddComponent<TextMesh>();
-        text.text = textContent;
-        text.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
-        text.fontSize = 50;
-        text.color = Color.white;
     }
 
 }

@@ -41,5 +41,6 @@ public class LightupScript : MonoBehaviour
     private void OnDestroy()
     {
         MonoBehaviourHelper.Instance.CancelInvokeMoonUpdate();
+        Internal_CancelInvokeAll(this);
     }
 }

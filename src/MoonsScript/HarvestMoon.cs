@@ -8,10 +8,10 @@ public class HarvestMoon : Moon
     public string name { get; set; } = "Harvest Moon";
     public Color color { get; set; } = new Color(218,206,10,255);
     public GameObject moonObject { get; set; }
-    public float precentageChanceSpawn { get; set; } = 0f;
+    public float precentageChanceSpawn { get; set; } = 10f;
     public int timeBetweenEachCall { get; set; } = 4;
     public string headerText { get; set; } = "The Harvest Moon casts its golden light...";
-    public string messageMoon { get; set; } = "The company is feeling generous";
+    public string messageMoon { get; set; } = "\nThe company is feeling generous";
 
     public void Init(GameObject gameObject)
     {
